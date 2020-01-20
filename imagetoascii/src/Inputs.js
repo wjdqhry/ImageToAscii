@@ -56,10 +56,13 @@ class Inputs extends Component {
         ascii: ""
     }
     onClick = () => {
+        const value = window.document.getElementById('path').value;
+        var isnull = false;
+        if(value != "")
+            isnull = true;
         this.setState({
-            clicked: true,
-            path: window.document.getElementById('path').value,
-            ascii: ""
+            clicked: isnull,
+            path: value
         });
     }
     onChangeClick = () => {

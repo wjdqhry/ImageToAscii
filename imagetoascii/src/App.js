@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Inputs from './Inputs'
 
 function App() {
-
   return (
     <Inputs></Inputs>
   );
