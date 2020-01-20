@@ -17,7 +17,7 @@ const InputArea = styled.div`
 `
 const TextField = styled.input`
   width:200px;
-  height:20px;
+  height:27px;
   margin-left: 10px;
   margin-right: 20px;
 `
@@ -49,12 +49,8 @@ class Inputs extends Component {
     }
     onClick = () => {
         this.setState({
-            clicked: true
-        });
-    }
-    onChange = (e) => {
-        this.setState({
-            path: e.target.value
+            clicked: true,
+            path: window.document.getElementById('path').value
         });
     }
     onLoad = (e) => {
@@ -65,7 +61,6 @@ class Inputs extends Component {
         ctx.drawImage(e.target, 0, 0);
 
         const pixels = ctx.getImageData(0, 0,canvas.width, canvas.height);
-        // console.log(pixels)
         
         for (var i = 0; i < pixels.data.length; i += 4) {
             pixels.data[i] = 255 - pixels.data[i];
@@ -76,14 +71,6 @@ class Inputs extends Component {
         ctx.putImageData(pixels, 0, 0);
     }
 
-    drawAscii(image){
-        for(var y=0; y<image.height; y++){
-            for(var x=0; x<image.width; x++){
-
-            }
-        }
-    }
-
     render(){
         if(this.state.clicked){
             return(
@@ -92,7 +79,7 @@ class Inputs extends Component {
                     <canvas id="canvas">Your browser does not support the HTML5 canvas tag</canvas>
                     <InputArea>
                         <Texts>이미지 url입력:</Texts>
-                        <TextField onChange={this.onChange}></TextField>
+                        <TextField id="path"></TextField>
                         <Button onClick={this.onClick}>불러오기</Button>
                         <Button>변환</Button>
                     </InputArea>
@@ -103,7 +90,7 @@ class Inputs extends Component {
             return (
                 <InputArea>
                     <Texts>이미지 url입력:</Texts>
-                    <TextField onChange={this.onChange}></TextField>
+                    <TextField id="path"></TextField>
                     <Button onClick={this.onClick}>불러오기</Button>
                 </InputArea>
             );
