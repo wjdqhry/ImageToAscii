@@ -20,6 +20,8 @@ const TextField = styled.input`
     height:27px;
     margin-left: 10px;
     margin-right: 20px;
+    border-radius: 3px;
+    border: 0.5px solid silver;
 `
 const Texts = styled.a`
     font-family: Georgia, "Malgun Gothic", serif;
@@ -36,38 +38,40 @@ const Button = styled.button`
     font-size: 15px;
     margin: 4px 2px;
     cursor: pointer;
-    border-radius:3px;
-`
-
-const Image = styled.img`
+    border-radius:5px;
 `
 
 const AsciiDisplay = styled.pre`
     font-Family: "Courier, monospace";
     line-height: 6px;
-    font-size: 11px;
+    font-size: 8px;
     display: inline-block;
+    border: 5px solid black;
 `
 
 class Inputs extends Component {
     state = {
         clicked: false,
         path: "",
-        ascii: ""
+        ascii: "",
+        visible: "hidden"
     }
     onClick = () => {
         const value = window.document.getElementById('path').value;
-        var isnull = false;
+        let isnull = false;
         if(value != "")
             isnull = true;
         this.setState({
             clicked: isnull,
-            path: value
+            path: value,
+            ascii: "",
+            visible: "hidden"
         });
     }
     onChangeClick = () => {
         this.setState({
-            ascii: this.string
+            ascii: this.string,
+            visible: "visible"
         });
     }
     onLoadAndChange = (e) => {
@@ -83,6 +87,10 @@ class Inputs extends Component {
         
         this.getAscii(pixels, 0, canvas.width);
         console.log(this.string);
+
+        this.setState({
+            visible: "hidden"
+        });
         // this.getReverse(pixels);
         // ctx.putImageData(pixels, 0, 0);
     }
@@ -129,7 +137,7 @@ class Inputs extends Component {
                 <>
                     <img src={'https://cors-anywhere.herokuapp.com/' + this.state.path} alt="description" onLoad={this.onLoadAndChange} onChange={this.onLoadAndChange} crossOrigin="Anonymous"/>
                     <canvas id="canvas">Your browser does not support the HTML5 canvas tag</canvas>
-                    <AsciiDisplay>{this.state.ascii}</AsciiDisplay>
+                    <AsciiDisplay visibility = {this.state.visible}>{this.state.ascii}</AsciiDisplay>
                     <InputArea>
                         <Texts>이미지 url입력:</Texts>
                         <TextField id="path"></TextField>
