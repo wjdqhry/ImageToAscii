@@ -69,6 +69,7 @@ function MainPage() {
 
     const pathField = useRef();
     const canvasTag = useRef();
+    const imageTag = useRef();
 
     let convertedString = "";
     const converter = new Converter();
@@ -76,8 +77,23 @@ function MainPage() {
     const onClick = () => {
         let isnull = false;
         let value = pathField.current.value;
-        if(value !== "")
+        if(value !== ""){
             isnull = true;
+            setTimeout(()=>{
+                const canvas = canvasTag.current;
+                const image = imageTag.current;
+                canvas.width = image.width;
+                canvas.height = image.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(image, 0, 0, image.width, image.height);
+
+                const pixels = ctx.getImageData(0, 0,canvas.width, canvas.height);
+                
+                canvas.crossOrigin = "Anonymous";
+                convertedString = converter.getAscii(pixels, 0, canvas.width);
+                console.log(convertedString);
+            }, 1000);
+        }
 
         setClicked(isnull);
         setPath(value)
@@ -94,7 +110,6 @@ function MainPage() {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(e.target, 0, 0, e.target.width, e.target.height);
 
-        canvas.crossOrigin = "Anonymous";
         const pixels = ctx.getImageData(0, 0,canvas.width, canvas.height);
         
         convertedString = converter.getAscii(pixels, 0, canvas.width);
@@ -107,8 +122,8 @@ function MainPage() {
     if(clicked){
         return(
             <>
-                <Image src={'https://cors-anywhere.herokuapp.com/' + path} alt="description" on onLoad={onLoadOrChange} onChange={onLoadOrChange} crossOrigin="Anonymous"/>
-                <canvas ref={canvasTag} style={{display:'block', margin:'auto'}} id="canvas">Your browser does not support the HTML5 canvas tag</canvas>
+                <Image src={'https://cors-anywhere.herokuapp.com/' + path} alt="description" ref = {imageTag} crossOrigin="Anonymous"/>
+                <canvas ref={canvasTag} style={{display:'block', margin:'auto'}} crossOrigin="Anonymous">Your browser does not support the HTML5 canvas tag</canvas>
                 <AsciiDisplay>{ascii}</AsciiDisplay>
                 <div>
                     <AfterInputArea>
