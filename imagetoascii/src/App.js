@@ -1,10 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
-import Inputs from './Inputs'
+import MainPage from './MainPage'
 
 function App() {
   return (
-    <Inputs></Inputs>
+    <MainPage></MainPage>
   );
 }
 
