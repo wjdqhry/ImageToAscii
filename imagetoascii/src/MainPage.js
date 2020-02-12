@@ -20,6 +20,7 @@ const BeforeInputArea = styled(InputArea)`
 `
 const AfterInputArea = styled(InputArea)`
     margin: auto;
+    margin-bottom:30px;
 `
 const TextField = styled.input`
     width:200px;
@@ -37,6 +38,7 @@ const Image = styled.img`
     display:block;
     width: 150px;
     margin: auto;
+    margin-bottom: 35px;
 `
 const Button = styled.button`
     background-color: #555555;
@@ -52,14 +54,16 @@ const Button = styled.button`
     border-radius:5px;
 `
 const AsciiDisplay = styled.pre`
-    font-Family: "궁서체";
+    font-family: monospace;
     line-height: 6px;
     font-size: 8px;
     border: 5px solid black;
     border-radius: 20px;
     margin: auto;
     margin-bottom: 30px;
-    width: 70%;
+    max-width: 85%;
+    text-align: center;
+    overflow: auto;
 `
 
 function MainPage() {
@@ -97,26 +101,25 @@ function MainPage() {
 
         setClicked(isnull);
         setPath(value)
+        setAscii("");
     }
 
     const onChangeClick = () => {
+        const canvas = canvasTag.current;
+        const ctx = canvas.getContext('2d');
+        const pixels = ctx.getImageData(0, 0,canvas.width, canvas.height);
+        convertedString = converter.getAscii(pixels, 0, canvas.width);
+
         setAscii(convertedString);
     }
 
     const onLoadOrChange = (e) => {
+        e.target.crossOrigin = 'Anonymous'
         const canvas = canvasTag.current;
         canvas.width = e.target.width;
         canvas.height = e.target.height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(e.target, 0, 0, e.target.width, e.target.height);
-
-        const pixels = ctx.getImageData(0, 0,canvas.width, canvas.height);
-        
-        convertedString = converter.getAscii(pixels, 0, canvas.width);
-        console.log(convertedString);
-        // this.getReverse(pixels);
-        // ctx.putImageData(pixels, 0, 0);
-        
     }
     
     if(clicked){
@@ -146,5 +149,4 @@ function MainPage() {
         );
     }
 }
-
 export default MainPage;
