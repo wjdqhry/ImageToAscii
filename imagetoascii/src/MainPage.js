@@ -18,11 +18,9 @@ const BeforeInputArea = styled(InputArea)`
     top:50%;
     left:50%;
 `
-
 const AfterInputArea = styled(InputArea)`
     margin: auto;
 `
-
 const TextField = styled.input`
     width:200px;
     height:27px;
@@ -34,6 +32,11 @@ const TextField = styled.input`
 const Texts = styled.a`
     font-family: Georgia, "Malgun Gothic", serif;
     font-size:25px;
+`
+const Image = styled.img`
+    display:block;
+    width: 150px;
+    margin: auto;
 `
 const Button = styled.button`
     background-color: #555555;
@@ -48,18 +51,15 @@ const Button = styled.button`
     cursor: pointer;
     border-radius:5px;
 `
-
 const AsciiDisplay = styled.pre`
-    font-Family: "Courier, monospace";
+    font-Family: "궁서체";
     line-height: 6px;
     font-size: 8px;
     border: 5px solid black;
-`
-
-const Image = styled.img`
-    display:block;
-    width:150;
+    border-radius: 20px;
     margin: auto;
+    margin-bottom: 30px;
+    width: 70%;
 `
 
 function MainPage() {
@@ -70,7 +70,7 @@ function MainPage() {
     const pathField = useRef();
     const canvasTag = useRef();
 
-    let convertedString="";
+    let convertedString = "";
     const converter = new Converter();
 
     const onClick = () => {
@@ -85,11 +85,9 @@ function MainPage() {
 
     const onChangeClick = () => {
         setAscii(convertedString);
-        convertedString = "";
     }
 
     const onLoadOrChange = (e) => {
-        e.target.height = 150
         const canvas = canvasTag.current;
         canvas.width = e.target.width;
         canvas.height = e.target.height;
@@ -103,12 +101,13 @@ function MainPage() {
         console.log(convertedString);
         // this.getReverse(pixels);
         // ctx.putImageData(pixels, 0, 0);
+        
     }
     
     if(clicked){
         return(
             <>
-                <Image src={'https://cors-anywhere.herokuapp.com/' + path} alt="description" onLoad={onLoadOrChange} onChange={onLoadOrChange} crossOrigin="Anonymous"/>
+                <Image src={'https://cors-anywhere.herokuapp.com/' + path} alt="description" on onLoad={onLoadOrChange} onChange={onLoadOrChange} crossOrigin="Anonymous"/>
                 <canvas ref={canvasTag} style={{display:'block', margin:'auto'}} id="canvas">Your browser does not support the HTML5 canvas tag</canvas>
                 <AsciiDisplay>{ascii}</AsciiDisplay>
                 <div>
