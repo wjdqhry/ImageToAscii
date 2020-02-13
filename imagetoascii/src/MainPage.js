@@ -34,11 +34,17 @@ const Texts = styled.a`
     font-family: Georgia, "Malgun Gothic", serif;
     font-size:25px;
 `
-const Image = styled.img`
-    display:block;
+const ActualImage = styled.img`
     width: 150px;
+    
+    position: absolute;
+    visibility: hidden;
+`
+const DisplayImage = styled.img`
     margin: auto;
     margin-bottom: 35px;
+    display:block;
+    width: 400px;
 `
 const Button = styled.button`
     background-color: #555555;
@@ -53,7 +59,7 @@ const Button = styled.button`
     cursor: pointer;
     border-radius:5px;
 `
-const AsciiDisplay = styled.pre`
+const DisplayAscii = styled.pre`
     font-family: monospace;
     line-height: 6px;
     font-size: 8px;
@@ -85,6 +91,7 @@ function MainPage() {
             isnull = true;
             setTimeout(()=>{
                 const canvas = canvasTag.current;
+                canvas.crossOrigin = "Anonymous";
                 const image = imageTag.current;
                 canvas.width = image.width;
                 canvas.height = image.height;
@@ -92,11 +99,10 @@ function MainPage() {
                 ctx.drawImage(image, 0, 0, image.width, image.height);
 
                 const pixels = ctx.getImageData(0, 0,canvas.width, canvas.height);
-                
-                canvas.crossOrigin = "Anonymous";
+
                 convertedString = converter.getAscii(pixels, 0, canvas.width);
                 console.log(convertedString);
-            }, 1000);
+            }, 100);
         }
 
         setClicked(isnull);
@@ -125,9 +131,10 @@ function MainPage() {
     if(clicked){
         return(
             <>
-                <Image src={'https://cors-anywhere.herokuapp.com/' + path} alt="description" ref = {imageTag} crossOrigin="Anonymous"/>
-                <canvas ref={canvasTag} style={{display:'block', margin:'auto'}} crossOrigin="Anonymous">Your browser does not support the HTML5 canvas tag</canvas>
-                <AsciiDisplay>{ascii}</AsciiDisplay>
+                <ActualImage src={'https://cors-anywhere.herokuapp.com/' + path} alt="description" ref = {imageTag} crossOrigin="Anonymous"/>
+                <DisplayImage src={'https://cors-anywhere.herokuapp.com/' + path} crossOrigin="Anonymous"/>
+                <canvas ref={canvasTag} style={{position:'absolute', visibility:'hidden'}} crossOrigin="Anonymous">Your browser does not support the HTML5 canvas tag</canvas>
+                <DisplayAscii>{ascii}</DisplayAscii>
                 <div>
                     <AfterInputArea>
                         <Texts>이미지 url입력:</Texts>
