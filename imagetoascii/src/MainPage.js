@@ -36,7 +36,6 @@ const Texts = styled.a`
 `
 const ActualImage = styled.img`
     width: 150px;
-    
     position: absolute;
     visibility: hidden;
 `
@@ -85,54 +84,53 @@ function MainPage() {
     const converter = new Converter();
 
     const onClick = () => {
-        let isnull = false;
-        let value = pathField.current.value;
-        if(value !== ""){
-            isnull = true;
-            setTimeout(()=>{
-                const canvas = canvasTag.current;
-                canvas.crossOrigin = "Anonymous";
-                const image = imageTag.current;
-                canvas.width = image.width;
-                canvas.height = image.height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(image, 0, 0, image.width, image.height);
+        const value = pathField.current.value;
+        let isNotNull;
 
-                const pixels = ctx.getImageData(0, 0,canvas.width, canvas.height);
+        value === "" ? isNotNull = false : isNotNull = true;
 
-                convertedString = converter.getAscii(pixels, 0, canvas.width);
-                console.log(convertedString);
-            }, 100);
-        }
-
-        setClicked(isnull);
+        setClicked(isNotNull);
         setPath(value)
         setAscii("");
     }
 
     const onChangeClick = () => {
         const canvas = canvasTag.current;
-        const ctx = canvas.getContext('2d');
-        const pixels = ctx.getImageData(0, 0,canvas.width, canvas.height);
-        convertedString = converter.getAscii(pixels, 0, canvas.width);
+        const image = imageTag.current;
+
+        if(image.width !=0){
+            canvas.crossOrigin = "Anonymous";
+            canvas.width = image.width;
+            canvas.height = image.height;
+            const ctx = canvas.getContext('2d');
+            try{
+                ctx.drawImage(image, 0, 0, image.width, image.height);
+            }catch{
+                alert("유효하지 않은 URL입니다.");
+                setClicked(false);
+            }
+            const pixels = ctx.getImageData(0, 0,canvas.width, canvas.height);
+            //converter.getReverse(pixels);
+            convertedString = converter.getAscii(pixels, 0, canvas.width);
+        }
 
         setAscii(convertedString);
     }
 
-    const onLoadOrChange = (e) => {
-        e.target.crossOrigin = 'Anonymous'
-        const canvas = canvasTag.current;
-        canvas.width = e.target.width;
-        canvas.height = e.target.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(e.target, 0, 0, e.target.width, e.target.height);
-    }
+    // const onLoadOrChange = (e) => {
+    //     e.target.crossOrigin = 'Anonymous'
+    //     const canvas = canvasTag.current;
+    //     canvas.width = e.target.width;
+    //     canvas.height = e.target.height;
+    //     const ctx = canvas.getContext('2d');
+    //     ctx.drawImage(e.target, 0, 0, e.target.width, e.target.height);
+    // }
     
     if(clicked){
         return(
             <>
                 <ActualImage src={'https://cors-anywhere.herokuapp.com/' + path} alt="description" ref = {imageTag} crossOrigin="Anonymous"/>
-                <DisplayImage src={'https://cors-anywhere.herokuapp.com/' + path} crossOrigin="Anonymous"/>
+                <DisplayImage src={'https://cors-anywhere.herokuapp.com/' + path} alt="Cannot Load Image" crossOrigin="Anonymous"/>
                 <canvas ref={canvasTag} style={{position:'absolute', visibility:'hidden'}} crossOrigin="Anonymous">Your browser does not support the HTML5 canvas tag</canvas>
                 <DisplayAscii>{ascii}</DisplayAscii>
                 <div>
