@@ -90,8 +90,8 @@ function MainPage() {
         value === "" ? isNotNull = false : isNotNull = true;
 
         setClicked(isNotNull);
-        setPath(value)
-        setAscii("");
+        setPath(value);
+        setAscii(""); 
     }
 
     const onChangeClick = () => {
@@ -113,18 +113,8 @@ function MainPage() {
             //converter.getReverse(pixels);
             convertedString = converter.getAscii(pixels, 0, canvas.width);
         }
-
         setAscii(convertedString);
     }
-
-    // const onLoadOrChange = (e) => {
-    //     e.target.crossOrigin = 'Anonymous'
-    //     const canvas = canvasTag.current;
-    //     canvas.width = e.target.width;
-    //     canvas.height = e.target.height;
-    //     const ctx = canvas.getContext('2d');
-    //     ctx.drawImage(e.target, 0, 0, e.target.width, e.target.height);
-    // }
     
     if(clicked){
         return(
